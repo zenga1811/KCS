@@ -1,11 +1,11 @@
 #!/bin/bash
-clear
+cd ~/repoDB
 
 i=0
 y=132127
 percentage=0
 
-for FILE in ~/repoDB/obradjeno/*/*.raw
+for FILE in obradjeno/*/*.raw
 do
 	frame -l 320 -p 160 $FILE | \
 	window -l 320 -L 512 | \

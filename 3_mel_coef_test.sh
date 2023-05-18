@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cd ~/repoDB/test_files
 
 sox wav_file.wav wav_file_short.raw

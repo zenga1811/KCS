@@ -5,7 +5,7 @@ from Levenshtein import distance as distancel
 from Levenshtein import editops
 
 os.system("clear")
-os.chdir("~/repoDB")
+os.chdir("/home/nick/repoDB")
 
 ignoriraj = ['buka', 'uzdah', 'greska', 'sil']
 indeksi = []
@@ -25,10 +25,12 @@ except:
 	exit()
 
 try:
-	with open('dataset/recenica.txt', 'r') as file:
-		indeksi = file.read()
+	indeksi = []
+	for line in open('dataset/recenica.txt'):
+		x = line.split("\n")
+		indeksi.append(x[0])
 
-except Exception as e:
+except:
 	startTime = datetime.datetime.now()
 
 	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/wav_file.txt")))
@@ -36,7 +38,7 @@ except Exception as e:
 
 	size = novaDat.shape[0]*len(sviGlasovi)
 	for i in range(len(novaDat)):
-		minValue = 100000
+		distanceList = []
 		for j in range(len(sviGlasovi)):
 			timeDiff = datetime.datetime.now() - startTime
 			string = "Obradjeno:\t" + str(round((c/size)*100, 2)) + "%\t" + str(timeDiff)
@@ -46,33 +48,28 @@ except Exception as e:
 			c = c + 1
 
 			dst = distance.euclidean(novaDat[i][1:], sveSrednjeVrijednosti[j][1:])
-
-			if(dst <= minValue):
-				minValue = dst
-				minIndex = j
-			else:
-				continue
-
-			if(sviGlasovi[minIndex] == 'a:'):
-				glas = 'a'
-			elif(sviGlasovi[minIndex] == 'e:'):
-				glas = 'e'
-			elif(sviGlasovi[minIndex] == 'i:'):
-				glas = 'i'
-			elif(sviGlasovi[minIndex] == 'o:'):
-				glas = 'o'
-			elif(sviGlasovi[minIndex] == 'u:'):
-				glas = 'u'
-			elif(sviGlasovi[minIndex] == 'r:'):
-				glas = 'r'
-			else:
-				glas = sviGlasovi[minIndex]
-
-
+			distanceList.append(dst)
+		minValue = min(distanceList)
+		minIndex = distanceList.index(min(distanceList))
+		if(sviGlasovi[minIndex] == 'a:'):
+			glas = 'a'
+		elif(sviGlasovi[minIndex] == 'e:'):
+			glas = 'e'
+		elif(sviGlasovi[minIndex] == 'i:'):
+			glas = 'i'
+		elif(sviGlasovi[minIndex] == 'o:'):
+			glas = 'o'
+		elif(sviGlasovi[minIndex] == 'u:'):
+			glas = 'u'
+		elif(sviGlasovi[minIndex] == 'r:'):
+			glas = 'r'
+		else:
+			glas = sviGlasovi[minIndex]
 		try:
 			if(glas not in ignoriraj):
 				indeksi.append(glas)
-				open("dataset/recenica_1.txt", "a").write(str(indeksi[-1]))
+				open("dataset/distance.txt", "a").write(str(minValue) + "\n")
+				open("dataset/recenica.txt", "a").write(str(indeksi[-1]) + "\n")
 		except:
 			continue
 
@@ -118,8 +115,8 @@ for (glas, i) in results:
 
 prepoznato = "".join(praviGlasovi)
 
-print(transkript)
-print(prepoznato)
+print("\nPravi transkript\n" + transkript)
+print("\nIzracunati transkript\n" + prepoznato)
 
 insert = delete = replace = 0
 for i,j,k in editops(prepoznato, transkript):
@@ -129,7 +126,8 @@ for i,j,k in editops(prepoznato, transkript):
 		insert+=1
 	elif(i=='replace'):
 		replace+=1
-print(delete)
-print(replace)
-print(insert)
-print(distancel(prepoznato, transkript))
+
+print("\nDeleted: " + str(delete))
+print("Inserted: " + str(insert))
+print("Replaced: " + str(replace))
+print("Levenshtein distance: " + str(distancel(prepoznato, transkript)))
