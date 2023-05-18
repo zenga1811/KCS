@@ -2,7 +2,8 @@ from pydub import AudioSegment
 import os, sys
 os.system("clear")
 
-files = os.listdir("/home/nick/repoDB/wav_sm04")
+os.chdir("/home/nick/repoDB")
+files = os.listdir("wav_sm04")
 size = len(files)
 obradjeno = 0
 
@@ -10,9 +11,9 @@ for file in files:
 	brojac = 0
 	id = file[2:-4]
 
-	fullAudio = AudioSegment.from_wav("/home/nick/repoDB/wav_sm04/sm"+id+".wav")
-	labFile = "/home/nick/repoDB/lab_sm04/sm" + id + ".lab"
-	os.system("mkdir /home/nick/repoDB/obradjeno/" + id)
+	fullAudio = AudioSegment.from_wav("wav_sm04/sm"+id+".wav")
+	labFile = "lab_sm04/sm" + id + ".lab"
+	os.system("mkdir obradjeno/" + id)
 
 	sys.stdout.write('\r')
 	sys.stdout.write("Obradjeno: " + str(obradjeno)+ " od "+ str(size)+ "\t(" + str(round((obradjeno/size)*100, 2)) + "%)")
@@ -41,10 +42,11 @@ for file in files:
 				newAudio.export(name+'.wav', format = "wav")
 
 				os.system("sox "+name+".wav "+name+"_short.raw")
-				os.system("x2x +sd "+name+"_short.raw > " + name + ".raw")
-				os.system("rm "+name+".wav")
+				os.system("/home/nick/Downloads/SPTK/build/x2x +sd "+name+"_short.raw > " + name + ".raw")
+				#os.system("rm "+name+".wav")
 				os.system("rm "+name+"_short.raw")
-				os.system("mv "+name+".raw /home/nick/repoDB/obradjeno/"+id+"/")
+				os.system("mv "+name+".raw obradjeno/"+id+"/")
+				os.system("mv "+name+".wav obradjeno/"+id+"/")
 				brojac = brojac + 1
 
 		obradjeno = obradjeno +1

@@ -2,8 +2,9 @@ import os, sys, glob, pickle
 import numpy as np
 
 os.system("clear")
+os.chdir("~/repoDB")
 
-files=glob.glob("../obradjeno/*/*.txt")
+files=glob.glob("obradjeno/*/*.txt")
 brojac = len(files)
 
 sviGlasovi = []
@@ -19,8 +20,8 @@ for file in files:
 
 	redak = redak + 1
 	
-with open("../../dataset/sveSrednjeVrijednosti_1", "wb") as fp:
+with open("dataset/sveSrednjeVrijednosti", "wb") as fp:
 	pickle.dump(sveSrednjeVrijednosti, fp)
 
-with open("sviGlasovi_1", "wb") as fp:
+with open("dataset/sviGlasovi", "wb") as fp:
 	pickle.dump(sviGlasovi, fp)

@@ -5,16 +5,17 @@ from Levenshtein import distance as distancel
 from Levenshtein import editops
 
 os.system("clear")
+os.chdir("~/repoDB")
 
 ignoriraj = ['buka', 'uzdah', 'greska', 'sil']
 indeksi = []
 novaDat = []
 
 try:
-	with open("dataset/sveSrednjeVrijednosti_1", "rb") as fp:
+	with open("dataset/sveSrednjeVrijednosti", "rb") as fp:
 		sveSrednjeVrijednosti = np.nan_to_num(pickle.load(fp))
 
-	with open("dataset/sviGlasovi_1", "rb") as fp:
+	with open("dataset/sviGlasovi", "rb") as fp:
 		sviGlasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
@@ -24,7 +25,7 @@ except:
 	exit()
 
 try:
-	with open('dataset/recenica_2.txt', 'r') as file:
+	with open('dataset/recenica.txt', 'r') as file:
 		indeksi = file.read()
 
 except Exception as e:
