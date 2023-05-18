@@ -2,7 +2,7 @@
 cd ~/repoDB
 
 i=0
-y=132127
+y=$(find obradjeno -name "*.raw" | wc -l)
 percentage=0
 
 for FILE in obradjeno/*/*.raw
