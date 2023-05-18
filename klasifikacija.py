@@ -1,4 +1,4 @@
-import os, sys, glob, pickle
+import os, sys, glob, pickle, datetime
 import numpy as np
 from scipy.spatial import distance
 from Levenshtein import distance as distancel
@@ -6,90 +6,129 @@ from Levenshtein import editops
 
 os.system("clear")
 
-files=glob.glob("all_files/average/average_slova/*.txt")
-brojac = len(files)
-
-ignoriraj = ['buka', 'uzdah', 'greska']
+ignoriraj = ['buka', 'uzdah', 'greska', 'sil']
 indeksi = []
 novaDat = []
 
 try:
-	with open("sveSrednjeVrijednosti", "rb") as fp:
-		sveSrednjeVrijednosti = pickle.load(fp)
+	with open("dataset/sveSrednjeVrijednosti_1", "rb") as fp:
+		sveSrednjeVrijednosti = np.nan_to_num(pickle.load(fp))
 
-	with open("sviGlasovi", "rb") as fp:
-		sviGlasovi = pickle.load(fp)
+	with open("dataset/sviGlasovi_1", "rb") as fp:
+		sviGlasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
 
 except:
-	sviGlasovi = []
-	sveSrednjeVrijednosti = []
-	redak = 0
-	for file in files:
-		sviGlasovi.append(os.path.basename(file).split('.')[0])
-		sveSrednjeVrijednosti.append(np.genfromtxt(file))
-		sys.stdout.write('\r')
-		sys.stdout.write("Obradjeno: " + str(redak)+ " od "+ str(brojac)+ "\t(" + str(round((redak/brojac)*100, 2)) + "%)")
-		sys.stdout.flush()
+	print("Dataset nije generiran\nPokreni skriptu all_files/generiranje_dataseta.py")
+	exit()
 
-		redak = redak + 1
+try:
+	with open('dataset/recenica_2.txt', 'r') as file:
+		indeksi = file.read()
 
-	with open("sveSrednjeVrijednosti", "wb") as fp:
-		pickle.dump(sveSrednjeVrijednosti, fp)
+except Exception as e:
+	startTime = datetime.datetime.now()
 
-	with open("sviGlasovi", "wb") as fp:
-		pickle.dump(sviGlasovi, fp)
-	print("Saved")
+	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/wav_file.txt")))
+	c = 0
 
-f1 = open("test_files/wav_file.txt")
-novaDat = np.genfromtxt(f1)
-print("\n\n")
+	size = novaDat.shape[0]*len(sviGlasovi)
+	for i in range(len(novaDat)):
+		minValue = 100000
+		for j in range(len(sviGlasovi)):
+			timeDiff = datetime.datetime.now() - startTime
+			string = "Obradjeno:\t" + str(round((c/size)*100, 2)) + "%\t" + str(timeDiff)
+			sys.stdout.write('\r')
+			sys.stdout.write(string)
+			sys.stdout.flush()
+			c = c + 1
 
-sveSrednjeVrijednosti = np.nan_to_num(sveSrednjeVrijednosti)
-novaDat = np.nan_to_num(novaDat)
+			dst = distance.euclidean(novaDat[i][1:], sveSrednjeVrijednosti[j][1:])
 
-c = 0
-dst = 0
-dst_ = 0
-size = novaDat.shape[0]*len(sviGlasovi)
-for i in range (0, novaDat.shape[0]-1):
-	minValue = 1e5
-	for j in range(len(sviGlasovi)):
-		c = c+1
-		"""sys.stdout.write('\r')
-		sys.stdout.write("Obradjeno: " + str(c)+ " od "+ str(size)+ "\t(" + str(round((c/size)*100, 2)) + "%)")
-		sys.stdout.write("\t" + str(i) + ":" + str(j))
-		sys.stdout.flush()"""
-		dst = distance.euclidean(novaDat[i][1:], sveSrednjeVrijednosti[j][1:])
-		if(dst < dst_):
-			print("Nova min dst: " + str(dst))
-		dst_ = dst
-		if(dst <= minValue):
-			minValue = dst
-			minIndex = j
-		else:
+			if(dst <= minValue):
+				minValue = dst
+				minIndex = j
+			else:
+				continue
+
+			if(sviGlasovi[minIndex] == 'a:'):
+				glas = 'a'
+			elif(sviGlasovi[minIndex] == 'e:'):
+				glas = 'e'
+			elif(sviGlasovi[minIndex] == 'i:'):
+				glas = 'i'
+			elif(sviGlasovi[minIndex] == 'o:'):
+				glas = 'o'
+			elif(sviGlasovi[minIndex] == 'u:'):
+				glas = 'u'
+			elif(sviGlasovi[minIndex] == 'r:'):
+				glas = 'r'
+			else:
+				glas = sviGlasovi[minIndex]
+
+
+		try:
+			if(glas not in ignoriraj):
+				indeksi.append(glas)
+				open("dataset/recenica_1.txt", "a").write(str(indeksi[-1]))
+		except:
 			continue
 
-		if(sviGlasovi[minIndex] == 'a:'):
-			glas = 'a'
-		elif(sviGlasovi[minIndex] == 'e:'):
-			glas = 'e'
-		elif(sviGlasovi[minIndex] == 'i:'):
-			glas = 'i'
-		elif(sviGlasovi[minIndex] == 'o:'):
-			glas = 'o'
-		elif(sviGlasovi[minIndex] == 'u:'):
-			glas = 'u'
-		elif(sviGlasovi[minIndex] == 'r:'):
-			glas = 'r'
-		else:
-			glas = sviGlasovi[minIndex]
+transkript = []
 
-	try:
-		if(glas not in ignoriraj):
-			indeksi.append(glas)
-	except:
-		continue
-print()
-print(indeksi)
+for line in open("test_files/transkript.lab"):
+	x = line.split("\n")
+	x = x[0].split(" ")
+	x = x[2]
+	if(x == 'a:'):
+		x = 'a'
+	elif(x == 'e:'):
+		x = 'e'
+	elif(x == 'i:'):
+		x = 'i'
+	elif(x == 'o:'):
+		x = 'o'
+	elif(x == 'u:'):
+		x = 'u'
+	elif(x == 'r:'):
+		x = 'r'
+	if x not in ['buka', 'uzdah', 'greska', 'sil']:
+		transkript.append(x)
+
+transkript = "".join(transkript)
+prepoznato = "".join(indeksi)
+
+zadnje = ''
+results = []
+
+for slovo in prepoznato:
+	if slovo == zadnje:
+		results[-1] = (slovo, results[-1][1] + 1)
+	else:
+		results.append((slovo, 1))
+		zadnje = slovo
+
+
+praviGlasovi = []
+for (glas, i) in results:
+	if(i>=3):
+		praviGlasovi.append(glas)
+
+prepoznato = "".join(praviGlasovi)
+
+print(transkript)
+print(prepoznato)
+
+insert = delete = replace = 0
+for i,j,k in editops(prepoznato, transkript):
+	if(i=='delete'):
+		delete+=1
+	elif(i=='insert'):
+		insert+=1
+	elif(i=='replace'):
+		replace+=1
+print(delete)
+print(replace)
+print(insert)
+print(distancel(prepoznato, transkript))
