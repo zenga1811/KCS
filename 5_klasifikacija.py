@@ -110,7 +110,7 @@ for slovo in prepoznato:
 
 praviGlasovi = []
 for (glas, i) in results:
-	if(i>=3):
+	if(i>=2):
 		praviGlasovi.append(glas)
 
 prepoznato = "".join(praviGlasovi)
