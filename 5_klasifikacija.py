@@ -5,17 +5,17 @@ from Levenshtein import distance as distancel
 from Levenshtein import editops
 
 os.system("clear")
-os.chdir("/home/nick/repoDB")
+os.chdir("/home/ive/repoDB")
 
 ignoriraj = ['buka', 'uzdah', 'greska', 'sil']
 indeksi = []
 novaDat = []
 
 try:
-	with open("melKoeficijenti", "rb") as fp:
+	with open("dataset/melKoeficijenti", "rb") as fp:
 		sveSrednjeVrijednosti = np.nan_to_num(pickle.load(fp))
 
-	with open("glasovi", "rb") as fp:
+	with open("dataset/glasovi", "rb") as fp:
 		sviGlasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
