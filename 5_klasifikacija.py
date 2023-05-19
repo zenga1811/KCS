@@ -116,7 +116,7 @@ for (glas, i) in results:
 prepoznato = "".join(praviGlasovi)
 
 print("\nPravi transkript\n" + transkript)
-print("\nIzracunati transkript\n" + prepoznato)
+print("\nPrepoznati transkript\n" + prepoznato)
 
 insert = delete = replace = 0
 for i,j,k in editops(prepoznato, transkript):
