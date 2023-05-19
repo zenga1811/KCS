@@ -2,7 +2,7 @@ import os, sys, glob, pickle
 import numpy as np
 
 os.system("clear")
-os.chdir("/home/nick/repoDB")
+os.chdir("/home/ive/repoDB")
 
 files=glob.glob("obradjeno/*/*.txt")
 brojac = len(files)
@@ -19,3 +19,7 @@ for file in files:
 	sys.stdout.flush()
 
 	redak = redak + 1
+with open("melKoeficijenti", "wb") as f:
+	pickle.dump(sveSrednjeVrijednosti, f)
+with open("glasovi", "wb") as f:
+	pickle.dump(sviGlasovi, f)

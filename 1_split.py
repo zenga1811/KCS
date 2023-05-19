@@ -2,7 +2,7 @@ from pydub import AudioSegment
 import os, sys
 os.system("clear")
 
-os.chdir("/home/nick/repoDB")
+os.chdir("/home/ive/repoDB")
 files = os.listdir("wav_sm04")
 size = len(files)
 obradjeno = 0
@@ -42,7 +42,7 @@ for file in files:
 				newAudio.export(name+'.wav', format = "wav")
 
 				os.system("sox "+name+".wav "+name+"_short.raw")
-				os.system("/home/nick/Downloads/SPTK/build/x2x +sd "+name+"_short.raw > " + name + ".raw")
+				os.system("/home/ive/repos/SPTK/build/x2x +sd "+name+"_short.raw > " + name + ".raw")
 				#os.system("rm "+name+".wav")
 				os.system("rm "+name+"_short.raw")
 				os.system("mv "+name+".raw obradjeno/"+id+"/")

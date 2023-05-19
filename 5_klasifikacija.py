@@ -12,10 +12,10 @@ indeksi = []
 novaDat = []
 
 try:
-	with open("dataset/sveSrednjeVrijednosti", "rb") as fp:
+	with open("melKoeficijenti", "rb") as fp:
 		sveSrednjeVrijednosti = np.nan_to_num(pickle.load(fp))
 
-	with open("dataset/sviGlasovi", "rb") as fp:
+	with open("glasovi", "rb") as fp:
 		sviGlasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
