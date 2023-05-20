@@ -1,5 +1,5 @@
 import numpy as np
-import os, sys, glob, pickle
+import os, sys, glob, pickle, time
 
 os.system("clear")
 os.chdir("/home/ive/repoDB")
@@ -15,6 +15,7 @@ except:
 	x_train = []
 	y_train = []
 	
+	start = time.perf_counter()
 	for root, dirs, file in files:
 		average = []
 		if len(root.split("/")) > 1:
@@ -24,9 +25,11 @@ except:
 				coef = (np.genfromtxt(slovo_))
 				x_train.append(coef)
 				y_train.append(slovo)
-	
+
+		stop = time.perf_counter()
+		timeDiff = round((stop-start) * (size/(i+1) - 1))
 		sys.stdout.write('\r')
-		sys.stdout.write("Obradjeno:\t(" + str(round((i/size)*100, 2)) + "%)")
+		sys.stdout.write("Obradjeno:\t" + str(round((i/size)*100, 2)) + "%\t" + tr(datetime.timedelta(seconds = timeDiff))
 		sys.stdout.flush()
 		i = i + 1
 	

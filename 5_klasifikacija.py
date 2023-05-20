@@ -1,4 +1,4 @@
-import os, sys, glob, pickle, datetime
+import os, sys, glob, pickle, time, datetime
 import numpy as np
 from scipy.spatial import distance
 from Levenshtein import distance as distancel
@@ -31,24 +31,25 @@ try:
 		indeksi.append(x[0])
 
 except:
-	startTime = datetime.datetime.now()
 
 	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/wav_file.txt")))
+	size = novaDat.shape[0]*len(sviGlasovi)
 	c = 0
 
-	size = novaDat.shape[0]*len(sviGlasovi)
+	start = time.perf_counter()
 	for i in range(len(novaDat)):
 		distanceList = []
 		for j in range(len(sviGlasovi)):
-			timeDiff = datetime.datetime.now() - startTime
-			string = "Obradjeno:\t" + str(round((c/size)*100, 2)) + "%\t" + str(timeDiff)
+			stop = time.perf_counter()
+			timeDiff = round((stop-start) * (size/(c+1) - 1))
+
+			string = "Obradjeno:\t" + str(round((c/size)*100, 2)) + "%\t" + str(datetime.timedelta(seconds = timeDiff))
 			sys.stdout.write('\r')
 			sys.stdout.write(string)
 			sys.stdout.flush()
 			c = c + 1
 
-			dst = distance.euclidean(novaDat[i][1:], sveSrednjeVrijednosti[j][1:])
-			#dst = abs(np.correlate(novaDat[i][1:], sveSrednjeVrijednosti[j][1:]))
+			dst = distance.euclidean(novaDat[i], sveSrednjeVrijednosti[j])
 			distanceList.append(dst)
 		minValue = min(distanceList)
 		minIndex = distanceList.index(min(distanceList))
@@ -69,7 +70,6 @@ except:
 		try:
 			if(glas not in ignoriraj):
 				indeksi.append(glas)
-				open("dataset/distance.txt", "a").write(str(minValue) + "\n")
 				open("dataset/recenica.txt", "a").write(str(indeksi[-1]) + "\n")
 		except:
 			continue

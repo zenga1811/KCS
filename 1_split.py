@@ -1,5 +1,5 @@
 from pydub import AudioSegment
-import os, sys
+import os, sys, time
 os.system("clear")
 
 os.chdir("/home/ive/repoDB")
@@ -7,6 +7,7 @@ files = os.listdir("wav_sm04")
 size = len(files)
 obradjeno = 0
 
+start = time.perf_counter()
 for file in files:
 	brojac = 0
 	id = file[2:-4]
@@ -14,9 +15,12 @@ for file in files:
 	fullAudio = AudioSegment.from_wav("wav_sm04/sm"+id+".wav")
 	labFile = "lab_sm04/sm" + id + ".lab"
 	os.system("mkdir obradjeno/" + id)
+	
+	stop = time.perf_counter()
+	timeDiff = round((stop-start) * (size/(obradjeno+1) - 1))
 
 	sys.stdout.write('\r')
-	sys.stdout.write("Obradjeno: " + str(obradjeno)+ " od "+ str(size)+ "\t(" + str(round((obradjeno/size)*100, 2)) + "%)")
+	sys.stdout.write("Obradjeno:\t" + str(round((obradjeno/size)*100, 2)) + "%\t" + str(datetime.timedelta(seconds = timeDiff)))
 	sys.stdout.flush()
 
 	try:

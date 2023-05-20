@@ -1,4 +1,4 @@
-import os, sys, glob, pickle
+import os, sys, glob, pickle, time
 import numpy as np
 
 os.system("clear")
@@ -11,11 +11,16 @@ sviGlasovi = []
 sveSrednjeVrijednosti = []
 redak = 0
 
+start = time.perf_counter()
 for file in files:
 	sviGlasovi.append(os.path.basename(file).split('.')[0].split("_")[1])
 	sveSrednjeVrijednosti.append(np.genfromtxt(file))
+
+	stop = time.perf_counter()
+	timeDiff = round((stop-start) * (brojac/(redak+1) - 1))
+
 	sys.stdout.write('\r')
-	sys.stdout.write("Obradjeno:\t(" + str(round((redak/brojac)*100, 2)) + "%)")
+	sys.stdout.write("Obradjeno:\t" + str(round((redak/brojac)*100, 2)) + "%\t" + str(datetime.timedelta(seconds = timeDiff)))
 	sys.stdout.flush()
 
 	redak = redak + 1
