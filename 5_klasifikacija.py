@@ -48,6 +48,7 @@ except:
 			c = c + 1
 
 			dst = distance.euclidean(novaDat[i][1:], sveSrednjeVrijednosti[j][1:])
+			#dst = abs(np.correlate(novaDat[i][1:], sveSrednjeVrijednosti[j][1:]))
 			distanceList.append(dst)
 		minValue = min(distanceList)
 		minIndex = distanceList.index(min(distanceList))
