@@ -28,7 +28,8 @@ print(g_res.best_params_)
 
 knn = KNeighborsClassifier(	metric = 'minkowski',
 							n_neighbors = 15,
-							weights = 'distance')
+							weights = 'distance',
+							algorithm = 'brute')
 
 clf = knn.fit(x_train, y_train)
 pickle.dump(clf, open("knn/clf", 'wb'))
