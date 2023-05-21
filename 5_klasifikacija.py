@@ -16,7 +16,7 @@ try:
 	print("Loaded")
 
 except:
-	print("Dataset nije generiran\nPokreni skriptu all_files/generiranje_dataseta.py")
+	print("Dataset nije generiran\nPokreni skriptu generate_dataset.py")
 	exit()
 
 try:
