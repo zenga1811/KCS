@@ -1,22 +1,17 @@
 import os, sys, glob, pickle, time, datetime
 import numpy as np
 from scipy.spatial import distance
-from Levenshtein import distance as distancel
-from Levenshtein import editops
+from KNN.ocjena import ocjena
 
 os.system("clear")
 os.chdir("/home/ive/repoDB")
 
-ignoriraj = ['buka', 'uzdah', 'greska', 'sil']
-indeksi = []
-novaDat = []
-
 try:
 	with open("dataset/melKoeficijenti", "rb") as fp:
-		sveSrednjeVrijednosti = np.nan_to_num(pickle.load(fp))
+		melKoeficijenti = np.nan_to_num(pickle.load(fp))
 
 	with open("dataset/glasovi", "rb") as fp:
-		sviGlasovi = np.nan_to_num(pickle.load(fp))
+		glasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
 
@@ -31,15 +26,16 @@ try:
 		indeksi.append(x[0])
 
 except:
-
+	
+	indeksi = []
 	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/wav_file.txt")))
-	size = novaDat.shape[0]*len(sviGlasovi)
+	size = novaDat.shape[0]*len(glasovi)
 	c = 0
 
 	start = time.perf_counter()
 	for i in range(len(novaDat)):
 		distanceList = []
-		for j in range(len(sviGlasovi)):
+		for j in range(len(glasovi)):
 			stop = time.perf_counter()
 			timeDiff = round((stop-start) * (size/(c+1) - 1))
 
@@ -49,86 +45,28 @@ except:
 			sys.stdout.flush()
 			c = c + 1
 
-			dst = distance.euclidean(novaDat[i], sveSrednjeVrijednosti[j])
+			dst = distance.euclidean(novaDat[i], melKoeficijenti[j])
 			distanceList.append(dst)
 		minValue = min(distanceList)
 		minIndex = distanceList.index(min(distanceList))
-		if(sviGlasovi[minIndex] == 'a:'):
+		if(glasovi[minIndex] == 'a:'):
 			glas = 'a'
-		elif(sviGlasovi[minIndex] == 'e:'):
+		elif(glasovi[minIndex] == 'e:'):
 			glas = 'e'
-		elif(sviGlasovi[minIndex] == 'i:'):
+		elif(glasovi[minIndex] == 'i:'):
 			glas = 'i'
-		elif(sviGlasovi[minIndex] == 'o:'):
+		elif(glasovi[minIndex] == 'o:'):
 			glas = 'o'
-		elif(sviGlasovi[minIndex] == 'u:'):
+		elif(glasovi[minIndex] == 'u:'):
 			glas = 'u'
-		elif(sviGlasovi[minIndex] == 'r:'):
+		elif(glasovi[minIndex] == 'r:'):
 			glas = 'r'
 		else:
-			glas = sviGlasovi[minIndex]
+			glas = glasovi[minIndex]
 		try:
-			if(glas not in ignoriraj):
-				indeksi.append(glas)
-				open("dataset/recenica.txt", "a").write(str(indeksi[-1]) + "\n")
+			indeksi.append(glas)
+			open("dataset/recenica.txt", "a").write(str(indeksi[-1]) + "\n")
 		except:
 			continue
 
-transkript = []
-
-for line in open("test_files/transkript.lab"):
-	x = line.split("\n")
-	x = x[0].split(" ")
-	x = x[2]
-	if(x == 'a:'):
-		x = 'a'
-	elif(x == 'e:'):
-		x = 'e'
-	elif(x == 'i:'):
-		x = 'i'
-	elif(x == 'o:'):
-		x = 'o'
-	elif(x == 'u:'):
-		x = 'u'
-	elif(x == 'r:'):
-		x = 'r'
-	if x not in ['buka', 'uzdah', 'greska', 'sil']:
-		transkript.append(x)
-
-transkript = "".join(transkript)
-prepoznato = "".join(indeksi)
-
-zadnje = ''
-results = []
-
-for slovo in prepoznato:
-	if slovo == zadnje:
-		results[-1] = (slovo, results[-1][1] + 1)
-	else:
-		results.append((slovo, 1))
-		zadnje = slovo
-
-
-praviGlasovi = []
-for (glas, i) in results:
-	if(i>=2):
-		praviGlasovi.append(glas)
-
-prepoznato = "".join(praviGlasovi)
-
-print("\nPravi transkript\n" + transkript)
-print("\nPrepoznati transkript\n" + prepoznato)
-
-insert = delete = replace = 0
-for i,j,k in editops(prepoznato, transkript):
-	if(i=='delete'):
-		delete+=1
-	elif(i=='insert'):
-		insert+=1
-	elif(i=='replace'):
-		replace+=1
-
-print("\nDeleted: " + str(delete))
-print("Inserted: " + str(insert))
-print("Replaced: " + str(replace))
-print("Levenshtein distance: " + str(distancel(prepoznato, transkript)))
+ocjena("test_files/transkript.lab", indeksi)

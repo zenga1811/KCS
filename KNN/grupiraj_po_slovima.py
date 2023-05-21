@@ -14,11 +14,7 @@ start = time.perf_counter()
 for file in files:
 	slovo = file.split("/")[2].split(".")[0].split("_")[1]
 	name = file.split("/")[-1]
-
-	#print("\nKopiraj " + file + " u slova/" + slovo + "/" + name)
-	#print("Preimenuj slova/" + slovo + "/" + name + " u slova/" + str(i) + "_" + slovo + ".txt")
 	
-
 	try:
 		os.makedirs("slova/" + slovo)
 	except:
