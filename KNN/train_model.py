@@ -1,6 +1,7 @@
 import numpy as np
 import os, sys, glob, pickle
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 
 os.system("clear")
@@ -23,10 +24,10 @@ g_res = gs.fit(x_train, y_train)
 print(g_res.best_params_)
 """
 
-knn = KNeighborsClassifier(	metric = 'minkowski',
+model = KNeighborsClassifier(metric = 'minkowski',
 							n_neighbors = 15,
 							weights = 'distance',
 							algorithm = 'brute')
 
-clf = knn.fit(x_train, y_train)
+clf = model.fit(x_train, y_train)
 pickle.dump(clf, open("knn/clf", 'wb'))
