@@ -50,14 +50,11 @@ def ocjena(file, prepoznato):
 		else:
 			temp.append((slovo, 1))
 			zadnje = slovo
-
 	praviGlasovi = []
 	for (glas, i) in temp:
 		if(i>=2):
 			praviGlasovi.append(glas)
 	prepoznato = "".join(praviGlasovi)
-
-	
 
 	insert = delete = replace = 0
 	for op, _, _ in editops(prepoznato, transkript):

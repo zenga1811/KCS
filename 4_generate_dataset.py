@@ -1,4 +1,4 @@
-import os, sys, glob, pickle, time
+import os, sys, glob, pickle, time, datetime
 import numpy as np
 
 os.system("clear")
@@ -24,7 +24,8 @@ for file in files:
 	sys.stdout.flush()
 
 	redak = redak + 1
-with open("melKoeficijenti", "wb") as f:
+
+with open("dataset/x_train", "wb") as f:
 	pickle.dump(melKoeficijenti, f)
-with open("glasovi", "wb") as f:
+with open("dataset/y_train", "wb") as f:
 	pickle.dump(glasovi, f)

@@ -1,22 +1,22 @@
 import os, sys, glob, pickle, time, datetime
 import numpy as np
 from scipy.spatial import distance
-from KNN.ocjena import ocjena
+from ocjena import ocjena
 
 os.system("clear")
 os.chdir("/home/ive/repoDB")
 
 try:
-	with open("dataset/melKoeficijenti", "rb") as fp:
+	with open("dataset/x_train", "rb") as fp:
 		melKoeficijenti = np.nan_to_num(pickle.load(fp))
 
-	with open("dataset/glasovi", "rb") as fp:
+	with open("dataset/y_train", "rb") as fp:
 		glasovi = np.nan_to_num(pickle.load(fp))
 
 	print("Loaded")
 
 except:
-	print("Dataset nije generiran\nPokreni skriptu generate_dataset.py")
+	print("Dataset nije generiran\nPokreni skriptu 4_generate_dataset.py")
 	exit()
 
 try:
@@ -49,6 +49,7 @@ except:
 			distanceList.append(dst)
 		minValue = min(distanceList)
 		minIndex = distanceList.index(min(distanceList))
+
 		if(glasovi[minIndex] == 'a:'):
 			glas = 'a'
 		elif(glasovi[minIndex] == 'e:'):
