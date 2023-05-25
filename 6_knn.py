@@ -13,11 +13,15 @@ try:
 except:
 
 	try:
+		x_train = []
 		with open("dataset/x_train", "rb") as fp:
-			x_train = np.nan_to_num(pickle.load(fp))
+			temp = np.nan_to_num(pickle.load(fp))
 
 		with open("dataset/y_train", "rb") as fp:
 			y_train = np.nan_to_num(pickle.load(fp))
+
+		for line in temp:
+			x_train.append(line[1:])
 
 	except:
 		print("Nije generiran dataset")
