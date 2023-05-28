@@ -1,5 +1,13 @@
-from Levenshtein import distance as distancel
-from Levenshtein import editops
+import Levenshtein
+
+def solve(s):
+	seen = s[0]
+	ans = s[0]
+	for i in s[1:]:
+		if i != seen:
+			ans += i
+			seen = i
+	return ans
 
 def ocjena(file, prepoznato):
 	temp = []
@@ -54,10 +62,10 @@ def ocjena(file, prepoznato):
 	for (glas, i) in temp:
 		if(i>=2):
 			praviGlasovi.append(glas)
-	prepoznato = "".join(praviGlasovi)
+	prepoznato = solve("".join(praviGlasovi))
 
 	insert = delete = replace = 0
-	for op, _, _ in editops(prepoznato, transkript):
+	for op, _, _ in Levenshtein.editops(prepoznato, transkript):
 		if(op == 'delete'):
 			delete+=1
 		elif(op == 'insert'):
@@ -70,4 +78,5 @@ def ocjena(file, prepoznato):
 	print("\nObrisano:\t\t" + str(delete))
 	print("Umetnuto:\t\t" + str(insert))
 	print("Zamijenjeno:\t\t" + str(replace))
-	print("Levenshtein distance:\t" + str(distancel(prepoznato, transkript)))
+	print("Levenshtein distance:\t" + str(Levenshtein.distance(prepoznato, transkript)))
+	print("Pouzdanost:\t\t" + str(((len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript))))

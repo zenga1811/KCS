@@ -1,6 +1,7 @@
 import os, sys, pickle
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
 from ocjena import ocjena
 import numpy as np
 
@@ -11,17 +12,15 @@ try:
 	clf = pickle.load(open("dataset/clf", 'rb'))
 
 except:
-
 	try:
-		x_train = []
 		with open("dataset/x_train", "rb") as fp:
 			temp = np.nan_to_num(pickle.load(fp))
+		x_train = []
+		for line in temp:
+			x_train.append(line[1:])
 
 		with open("dataset/y_train", "rb") as fp:
 			y_train = np.nan_to_num(pickle.load(fp))
-
-		for line in temp:
-			x_train.append(line[1:])
 
 	except:
 		print("Nije generiran dataset")
@@ -36,15 +35,20 @@ except:
 	g_res = gs.fit(x_train, y_train)
 	print(g_res.best_params_)
 	"""
+	print("Generating new model\n\n")
 
-	model = KNeighborsClassifier(metric = 'minkowski',
-								n_neighbors = 15,
-								weights = 'distance',
-								algorithm = 'brute')
+	model = KNeighborsClassifier(metric = "euclidean",
+								n_neighbors = 100,
+								weights = "distance",
+								algorithm = "brute")
 
-	clf = model.fit(x_train, y_train)
-	pickle.dump(clf, open("dataset/clf", 'wb'))
+	clf = model.fit(np.asarray(x_train), y_train)
+	#pickle.dump(clf, open("dataset/clf", 'wb'))
 
+test_dir = "test_files/test1/"
+temp = np.genfromtxt(test_dir + "wav_file.txt")
+x_test = []
+for line in temp:
+	x_test.append(line[1:])
 
-x_test = np.genfromtxt("test_files/wav_file.txt")
-ocjena("test_files/transkript.lab", clf.predict(x_test))
+ocjena(test_dir + "transkript.lab", clf.predict(np.asarray(x_test)))
