@@ -1,11 +1,7 @@
 __pycache__/
-
 repoDB/dataset/x_train
 repoDB/dataset/y_train
-
 lab_sm04/*.lab
 wav_sm04/*.wav
-
 obradjeno/
-
-test_files/test1/*
+test_files/*
