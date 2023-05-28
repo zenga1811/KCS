@@ -43,7 +43,7 @@ except:
 								algorithm = "brute")
 
 	clf = model.fit(np.asarray(x_train), y_train)
-	#pickle.dump(clf, open("dataset/clf", 'wb'))
+	pickle.dump(clf, open("dataset/clf", 'wb'))
 
 test_dir = "test_files/test1/"
 temp = np.genfromtxt(test_dir + "wav_file.txt")
