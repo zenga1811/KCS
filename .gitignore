@@ -5,5 +5,4 @@ repoDB/dataset/y_train
 
 repoDB/lab_sm04/*.lab
 repoDB/wav_sm04/*.wav
-repoDB/obradjeno/
-repoDB/test_files/*
+repoDB/obradjeno/*/*
