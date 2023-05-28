@@ -6,7 +6,7 @@ from ocjena import ocjena
 import numpy as np
 
 os.system("clear")
-os.chdir("/home/ive/repoDB")
+os.chdir("repoDB")
 
 try:
 	clf = pickle.load(open("dataset/clf", 'rb'))

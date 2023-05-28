@@ -2,7 +2,7 @@ from pydub import AudioSegment
 import os, sys, time
 os.system("clear")
 
-os.chdir("/home/ive/repoDB")
+os.chdir("repoDB")
 files = os.listdir("wav_sm04")
 size = len(files)
 obradjeno = 0

@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/repoDB
+cd repoDB
 
 i=0
 y=$(find obradjeno -name "*.raw" | wc -l)

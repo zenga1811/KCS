@@ -2,7 +2,7 @@ import os, sys, glob, pickle, time, datetime
 import numpy as np
 
 os.system("clear")
-os.chdir("/home/ive/repoDB")
+os.chdir("repoDB")
 
 files=glob.glob("obradjeno/*/*.txt")
 brojac = len(files)

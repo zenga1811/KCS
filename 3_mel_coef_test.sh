@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/repoDB/test_files/test3
+cd repoDB/test_files/test3
 
 sox wav_file.wav wav_file_short.raw
 x2x +sd < wav_file_short.raw > wav_file.raw

@@ -4,7 +4,7 @@ from scipy.spatial import distance
 from ocjena import ocjena
 
 os.system("clear")
-os.chdir("/home/ive/repoDB")
+os.chdir("repoDB")
 
 try:
 	with open("dataset/x_train", "rb") as fp:
