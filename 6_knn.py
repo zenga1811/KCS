@@ -26,26 +26,16 @@ except:
 		print("Nije generiran dataset")
 		exit()
 
-	"""
-	grid_params = { 'n_neighbors' : [5,7,9,11,13,15],
-	               'weights' : ['uniform','distance'],
-	               'metric' : ['minkowski','euclidean','manhattan']}
-
-	gs = GridSearchCV(KNeighborsClassifier(), grid_params, verbose = 4, cv=3, n_jobs = -1)
-	g_res = gs.fit(x_train, y_train)
-	print(g_res.best_params_)
-	"""
 	print("Generating new model\n\n")
 
-	model = KNeighborsClassifier(metric = "euclidean",
+	model = KNeighborsClassifier(metric = "minkowski",
 								n_neighbors = 100,
-								weights = "distance",
-								algorithm = "brute")
+								weights = "distance")
 
 	clf = model.fit(np.asarray(x_train), y_train)
 	pickle.dump(clf, open("dataset/clf", 'wb'))
 
-test_dir = "test_files/test1/"
+test_dir = "test_files/test3/"
 temp = np.genfromtxt(test_dir + "wav_file.txt")
 x_test = []
 for line in temp:

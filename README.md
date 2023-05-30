@@ -1,6 +1,10 @@
 # Klasifikacija glasova (KCS)
 Klasifikacija glasova iz zvučnog zapisa pomoću analize mel-kepstralnih koeficijenata
 
+Potrebni alati: __Python 3__, __SPTK__
+
+Potrebne _Python_ knjižnice: __PyDub__, __Levenshtein__, __NumPy__, __SciPy__, __Scikit-Learn__
+
 ## Upute
 1. U folder **repoDB/lab_sm04** extractati _.lab_ datoteke
 2. U folder **repoDB/wav_sm04** extractati _.wav_ datoteke
