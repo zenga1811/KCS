@@ -28,13 +28,15 @@ try:
 except:
 	
 	indeksi = []
-	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/wav_file.txt")))
+
+	novaDat = np.nan_to_num(np.genfromtxt(open("test_files/test3/wav_file.txt")))
 	size = novaDat.shape[0]*len(glasovi)
 	c = 0
 
 	start = time.perf_counter()
 	for i in range(len(novaDat)):
 		distanceList = []
+
 		for j in range(len(glasovi)):
 			stop = time.perf_counter()
 			timeDiff = round((stop-start) * (size/(c+1) - 1))
@@ -45,8 +47,9 @@ except:
 			sys.stdout.flush()
 			c = c + 1
 
-			dst = distance.euclidean(novaDat[i], melKoeficijenti[j])
+			dst = distance.euclidean(novaDat[i][1:], melKoeficijenti[j][1:])
 			distanceList.append(dst)
+
 		minValue = min(distanceList)
 		minIndex = distanceList.index(min(distanceList))
 
@@ -64,10 +67,12 @@ except:
 			glas = 'r'
 		else:
 			glas = glasovi[minIndex]
+
+
 		try:
 			indeksi.append(glas)
 			open("dataset/recenica.txt", "a").write(str(indeksi[-1]) + "\n")
 		except:
 			continue
 
-ocjena("test_files/transkript.lab", indeksi)
+ocjena("test_files/test3/transkript.lab", indeksi)
