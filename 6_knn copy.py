@@ -38,7 +38,7 @@ wav_folder = "wav_sm04/"
 lab_folder = "lab_sm04/"
 test_dir = "test_files/test/"
 
-pouzdanost_array = []
+srednje_vrijednosti = []
 size = 0.2*2329
 
 start = time.perf_counter()
@@ -62,8 +62,10 @@ for file in os.listdir(wav_folder):
 		for line in temp:
 			x_test.append(line[1:])
 
-		pouzdanost = ocjena(test_dir + "transkript.lab", clf.predict(np.asarray(x_test)))
-		pouzdanost_array.append(pouzdanost)
+		delete, replace, insert, pouzdanost = ocjena(test_dir + "transkript.lab", clf.predict(np.asarray(x_test)))
+		srednje_vrijednosti.append([delete, replace, insert, pouzdanost])
+
+		os.system("rm test_files/test/transkript.lab test_files/test/wav_file.txt")
 			
 		stop = time.perf_counter()
 		timeDiff = round((stop-start) * (size/(i+1) - 1))
@@ -72,8 +74,16 @@ for file in os.listdir(wav_folder):
 		sys.stdout.write('\r')
 		sys.stdout.write(string)
 		sys.stdout.flush()
+
 		i = i + 1
 			
 		if(i > size):
 			break
-print("\n\nSrednja pouzdanost:\t" + str(mean(pouzdanost_array)))
+	
+srednje_vrijednosti = np.asarray(srednje_vrijednosti).mean(0)
+
+print("\n\nSrednje vrijednosti")
+print("Izbrisano:\t" + str(srednje_vrijednosti[0]))
+print("Zamijenjeno:\t" + str(srednje_vrijednosti[1]))
+print("Umetnuto:\t" + str(srednje_vrijednosti[2]))
+print("Pouzdanost:\t" + str(srednje_vrijednosti[3]))

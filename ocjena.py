@@ -72,13 +72,15 @@ def ocjena(file, prepoznato):
 			insert+=1
 		elif(op == 'replace'):
 			replace+=1
-			
-	#print("\nPravi transkript\n" + transkript)
-	#print("\nPrepoznati transkript\n" + prepoznato)
-	#print("\nObrisano:\t\t" + str(delete))
-	#print("Umetnuto:\t\t" + str(insert))
-	#print("Zamijenjeno:\t\t" + str(replace))
-	#print("Levenshtein distance:\t" + str(Levenshtein.distance(prepoznato, transkript)))
-	#print("Pouzdanost:\t\t" + str(((len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript))))
 
-	return ((len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript))
+	"""
+	print("\nPravi transkript\n" + transkript)
+	print("\nPrepoznati transkript\n" + prepoznato)
+	print("\nObrisano:\t\t" + str(delete))
+	print("Umetnuto:\t\t" + str(insert))
+	print("Zamijenjeno:\t\t" + str(replace))
+	print("Levenshtein distance:\t" + str(Levenshtein.distance(prepoznato, transkript)))
+	print("Pouzdanost:\t\t" + str(((len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript))))
+	"""
+
+	return delete, insert, replace, (len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript)
