@@ -62,7 +62,7 @@ for file in os.listdir(wav_folder):
 		for line in temp:
 			x_test.append(line[1:])
 
-		delete, replace, insert, pouzdanost = ocjena(test_dir + "transkript.lab", clf.predict(np.asarray(x_test)))
+		delete, replace, insert, pouzdanost, _, _ = ocjena(test_dir + "transkript.lab", clf.predict(np.asarray(x_test)))
 		srednje_vrijednosti.append([delete, replace, insert, pouzdanost])
 
 		os.system("rm test_files/test/transkript.lab test_files/test/wav_file.txt")

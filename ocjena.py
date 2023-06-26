@@ -83,4 +83,4 @@ def ocjena(file, prepoznato):
 	print("Pouzdanost:\t\t" + str(((len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript))))
 	"""
 
-	return delete, insert, replace, (len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript)
+	return delete, insert, replace, (len(transkript)-Levenshtein.distance(prepoznato, transkript))/len(transkript), transkript, prepoznato
