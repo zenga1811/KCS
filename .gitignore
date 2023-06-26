@@ -7,5 +7,5 @@ repoDB/lab_sm04/*.lab
 repoDB/wav_sm04/*.wav
 repoDB/obradjeno/*/*
 
-repoDB/test_jedan_zapis/transkript.lab
-repoDB/test_jedan_zapis/wav_file.txt
+repoDB/test_files/test_jedan_zapis/transkript.lab
+repoDB/test_files/test_jedan_zapis/wav_file.txt
